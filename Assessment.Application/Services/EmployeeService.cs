@@ -9,13 +9,15 @@ namespace Assessment.Application.Services
 {
     public class EmployeeService : IEmployeeService
     {
+        #region Fields
         private IEmployeeRepository _employeeRepository;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
         private readonly string _employeeListCacheKey = "employee_list";
-        private string GetEmployeeCacheKey(int id) => $"employee_{id}";
+        private string GetEmployeeCacheKey(int id) => $"employee_{id}"; 
+        #endregion
 
-
+        #region Public Methods
         public EmployeeService(IEmployeeRepository EmployeeRepository, IMapper mapper, IMemoryCache cache)
         {
             _employeeRepository = EmployeeRepository;
@@ -75,7 +77,10 @@ namespace Assessment.Application.Services
             return false;
         }
 
-        // Caches indefinitely
+        #endregion
+
+        #region Private Methods
+
         private async Task<T> CachedLong<T>(string key, Func<Task<T>> getData)
         {
             if (!_cache.TryGetValue(key, out T value))
@@ -86,7 +91,6 @@ namespace Assessment.Application.Services
             return value;
         }
 
-        // Updated Cached method to support async lambdas
         private async Task<T> Cached<T>(string key, Func<Task<T>> getData)
         {
             if (!_cache.TryGetValue(key, out T value))
@@ -99,9 +103,10 @@ namespace Assessment.Application.Services
 
         private void InvalidateCache(int id)
         {
-            _cache.Remove(_employeeListCacheKey); // Invalidate the list cache
-            _cache.Remove(GetEmployeeCacheKey(id)); // Invalidate the individual employee cache
+            _cache.Remove(_employeeListCacheKey); 
+            _cache.Remove(GetEmployeeCacheKey(id)); 
         }
 
+        #endregion
     }
 }

@@ -1,5 +1,4 @@
 using Assessment.Application.AutoMapper;
-using Assessment.Domain.Models;
 using Assessment.Infra.Data.Context;
 using Assessment.Infra.IoC;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +13,7 @@ internal class Program
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<AssessmentDBContext>(options =>
         {
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlite(builder.Configuration.GetConnectionString("AssessmentDbConnection"));
         });
        
         builder.Services.AddAutoMapper(typeof(AutoMapperConfiguration).Assembly);

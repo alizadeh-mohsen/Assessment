@@ -11,13 +11,19 @@ namespace Assessment.Infra.IoC
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            //Application Layer 
+            #region Application Layer Dependecies
+
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IWorkingDaysService, WorkingDaysService>();
 
-            //Infra.Data Layer
+            #endregion
+
+            #region Infra.Data Layer Dependecies
+
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IWorkingDaysRepository, WorkingDaysRepository>();
+
+            #endregion
         }
     }
 }

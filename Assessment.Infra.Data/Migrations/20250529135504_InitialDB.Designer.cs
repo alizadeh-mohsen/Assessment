@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assessment.Infra.Data.Migrations
 {
     [DbContext(typeof(AssessmentDBContext))]
-    [Migration("20250529130019_init2")]
-    partial class init2
+    [Migration("20250529135504_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

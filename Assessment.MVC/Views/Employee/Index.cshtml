@@ -25,12 +25,7 @@
             <tr>
                 <td>@item.Name</td>
                 <td>@item.JobPosition</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(item.Email))
-                    {
-                        <img src="@item.Email" alt="Employee Email" width="60" />
-                    }
-                </td>
+                <td>@item.Email</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

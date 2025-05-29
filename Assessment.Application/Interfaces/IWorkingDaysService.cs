@@ -1,5 +1,4 @@
 ﻿using Assessment.Application.ViewModels;
-using Assessment.Domain.Models;
 
 namespace Assessment.Application.Interfaces
 {

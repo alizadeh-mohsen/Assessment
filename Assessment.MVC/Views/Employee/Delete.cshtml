@@ -14,12 +14,7 @@
         <dt class="col-sm-2">Job Position</dt>
         <dd class="col-sm-10">@Model.JobPosition</dd>
         <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">
-            @if (!string.IsNullOrEmpty(Model.Email))
-            {
-                <img src="@Model.Email" alt="Employee Email" width="120" />
-            }
-        </dd>
+        <dd class="col-sm-10">@Model.Email</dd>
     </dl>
 </div>
 

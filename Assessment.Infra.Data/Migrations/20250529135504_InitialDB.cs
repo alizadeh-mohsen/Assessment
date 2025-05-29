@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Assessment.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,9 +52,14 @@ namespace Assessment.Infra.Data.Migrations
                 columns: new[] { "Id", "Date", "Description" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "New Year's Day" },
-                    { 2, new DateTime(2021, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "New Year's Day" },
-                    { 3, new DateTime(2021, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "New Year's Day" }
+                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "New Year’s Day" },
+                    { 2, new DateTime(2025, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "Good Friday" },
+                    { 3, new DateTime(2025, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "Easter Monday" },
+                    { 4, new DateTime(2025, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Early May Bank Holiday" },
+                    { 5, new DateTime(2025, 5, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Spring Bank Holiday" },
+                    { 6, new DateTime(2025, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Summer Bank Holiday" },
+                    { 7, new DateTime(2025, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Christmas Day" },
+                    { 8, new DateTime(2025, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Boxing Day" }
                 });
         }
 
