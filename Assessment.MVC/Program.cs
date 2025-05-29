@@ -16,9 +16,7 @@ internal class Program
             options.UseSqlite(builder.Configuration.GetConnectionString("AssessmentDbConnection"));
         });
        
-        builder.Services.AddAutoMapper(typeof(AutoMapperConfiguration).Assembly);
-        builder.Services.RegisterServices(); // Extension method for DependencyContainer
-        builder.Services.AddMemoryCache();
+        builder.Services.RegisterServices(); 
      
         var app = builder.Build();
 

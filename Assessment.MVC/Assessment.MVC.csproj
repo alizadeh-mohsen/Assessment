@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Assessment.Application\Assessment.Application.csproj" />
-    <ProjectReference Include="..\Assessment.Infra.Data\Assessment.Infra.Data.csproj" />
     <ProjectReference Include="..\Assessment.Infra.IoC\Assessment.Infra.IoC.csproj" />
   </ItemGroup>
 

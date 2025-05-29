@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assessment.Infra.Data.Migrations
 {
     [DbContext(typeof(AssessmentDBContext))]
-    [Migration("20250529135504_InitialDB")]
+    [Migration("20250529143342_InitialDB")]
     partial class InitialDB
     {
         /// <inheritdoc />

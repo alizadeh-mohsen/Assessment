@@ -1,4 +1,5 @@
 ﻿
+using Assessment.Application.AutoMapper;
 using Assessment.Application.Interfaces;
 using Assessment.Application.Services;
 using Assessment.Domain.Interfaces;
@@ -24,6 +25,14 @@ namespace Assessment.Infra.IoC
             services.AddScoped<IWorkingDaysRepository, WorkingDaysRepository>();
 
             #endregion
+
+            #region Persenation Layer Dependencies
+            
+            services.AddAutoMapper(typeof(AutoMapperConfiguration).Assembly);
+            services.AddMemoryCache();
+            
+            #endregion
+
         }
     }
 }
