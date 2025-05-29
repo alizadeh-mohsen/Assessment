@@ -1,53 +1,108 @@
 ﻿using Assessment.Domain.Interfaces;
 using Assessment.Domain.Models;
 using Assessment.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Assessment.Infra.Data.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
         private AssessmentDBContext _context;
+        private readonly ILogger<EmployeeRepository> _logger;
 
-        public EmployeeRepository(AssessmentDBContext ctx)
+        public EmployeeRepository(AssessmentDBContext ctx, ILogger<EmployeeRepository> logger)
         {
             _context = ctx;
+            _logger = logger;
         }
 
-        public IEnumerable<Employee> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return _context.Employees.ToList();
-        }
-
-        public Employee? GetEmployeeById(int id)
-        {
-            return _context.Employees.FirstOrDefault(e => e.Id == id);
-        }
-
-        public void AddEmployee(Employee employee)
-        {
-            _context.Employees.Add(employee);
-            _context.SaveChanges();
-        }
-
-        public void UpdateEmployee(Employee employee)
-        {
-            var existing = _context.Employees.FirstOrDefault(e => e.Id == employee.Id);
-            if (existing != null)
+            try
             {
-                existing.Name = employee.Name;
-                existing.Job = employee.Job;
-                existing.Email = employee.Email;
-                _context.SaveChanges();
+                return await _context.Employees.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving employees from the database.");
+                return Enumerable.Empty<Employee>();
             }
         }
 
-        public void DeleteEmployee(int id)
+        public async Task<Employee?> GetEmployee(int id)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.Id == id);
-            if (employee != null)
+            try
+            {
+                var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+                if (employee == null)
+                {
+                    _logger.LogWarning($"Employee with ID {id} not found.");
+                    return null;
+                }
+                return employee;
+            }
+            catch (Exception)
+            {
+                _logger.LogError($"Error retrieving employee with ID {id} from the database.");
+                return null;
+            }
+        }
+
+        public async Task<bool> AddEmployee(Employee employee)
+        {
+            try
+            {
+                _context.Employees.Add(employee);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding employee to the database.");
+                return false;
+            }
+
+        }
+
+        public async Task<bool> UpdateEmployee(Employee employee)
+        {
+            try
+            {
+                var existing = await _context.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+
+                if (existing == null)
+                {
+                    _logger.LogError($"Error retrieving employee with ID {employee.Id} from the database.");
+                    return false;
+                }
+                else
+                {
+                    existing.Name = employee.Name;
+                    existing.JobPosition = employee.JobPosition;
+                    existing.Email = employee.Email;
+                    return await _context.SaveChangesAsync() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating employee in the database.");
+                return false;
+            }
+
+        }
+
+        public async Task<bool> DeleteEmployee(int id)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            if (employee == null)
+            {
+                _logger.LogError($"Error retrieving employee with ID {id} from the database.");
+                return false;
+            }
+            else
             {
                 _context.Employees.Remove(employee);
-                _context.SaveChanges();
+                return await _context.SaveChangesAsync() > 0;
             }
         }
     }

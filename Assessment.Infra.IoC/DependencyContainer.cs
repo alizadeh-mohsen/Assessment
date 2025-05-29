@@ -13,9 +13,11 @@ namespace Assessment.Infra.IoC
         {
             //Application Layer 
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IWorkingDaysService, WorkingDaysService>();
 
             //Infra.Data Layer
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IWorkingDaysRepository, WorkingDaysRepository>();
         }
     }
 }

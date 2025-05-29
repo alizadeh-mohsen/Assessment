@@ -3,6 +3,7 @@ using System;
 using Assessment.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assessment.Infra.Data.Migrations
 {
     [DbContext(typeof(AssessmentDBContext))]
-    partial class AssessmentDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250529124042_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");
@@ -70,50 +73,20 @@ namespace Assessment.Infra.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "New Year’s Day"
+                            Date = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "New Year's Day"
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2025, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Good Friday"
+                            Date = new DateTime(2021, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "New Year's Day"
                         },
                         new
                         {
                             Id = 3,
-                            Date = new DateTime(2025, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Easter Monday"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Date = new DateTime(2025, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Early May Bank Holiday"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Date = new DateTime(2025, 5, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Spring Bank Holiday"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Date = new DateTime(2025, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Summer Bank Holiday"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Date = new DateTime(2025, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Christmas Day"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Date = new DateTime(2025, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Boxing Day"
+                            Date = new DateTime(2021, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "New Year's Day"
                         });
                 });
 #pragma warning restore 612, 618

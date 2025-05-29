@@ -15,16 +15,16 @@ namespace Assessment.MVC.Controllers
         }
 
         // GET: /Employee/
-        public IActionResult Index()
+        public async Task<ActionResult<IEnumerable<EmployeeViewModel>>> Index()
         {
-            var model = _EmployeeService.GetEmployees();
+            var model = await _EmployeeService.GetEmployees();
             return View(model);
         }
 
         // GET: /Employee/Details/5
-        public IActionResult Details(int id)
+        public async Task<ActionResult<EmployeeViewModel>> Details(int id)
         {
-            var employee = _EmployeeService.GetEmployee(id);
+            var employee = await _EmployeeService.GetEmployee(id);
             if (employee == null)
                 return NotFound();
             return View(employee);
@@ -38,21 +38,23 @@ namespace Assessment.MVC.Controllers
 
         // POST: /Employee/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employee)
+        public async Task<IActionResult> Create(EmployeeViewModel employeeViewModel)
         {
             if (ModelState.IsValid)
             {
-                _EmployeeService.AddEmployee(employee);
-                return RedirectToAction(nameof(Index));
+                if (await _EmployeeService.AddEmployee(employeeViewModel))
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction("Error", "Home");
             }
-            return View(employee);
+
+            return View(employeeViewModel);
         }
 
         // GET: /Employee/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var employee = _EmployeeService.GetEmployee(id);
+            var employee = await _EmployeeService.GetEmployee(id);
             if (employee == null)
                 return NotFound();
             return View(employee);
@@ -60,21 +62,22 @@ namespace Assessment.MVC.Controllers
 
         // POST: /Employee/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Employee employee)
+        public async Task<IActionResult> Edit(EmployeeViewModel employee)
         {
             if (ModelState.IsValid)
             {
-                _EmployeeService.UpdateEmployee(employee);
-                return RedirectToAction(nameof(Index));
+                if (await _EmployeeService.UpdateEmployee(employee))
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction("Error", "Home");
             }
             return View(employee);
         }
 
         // GET: /Employee/Delete/5
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var employee = _EmployeeService.GetEmployee(id);
+            var employee = await _EmployeeService.GetEmployee(id);
             if (employee == null)
                 return NotFound();
             return View(employee);
@@ -82,11 +85,12 @@ namespace Assessment.MVC.Controllers
 
         // POST: /Employee/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _EmployeeService.DeleteEmployee(id);
-            return RedirectToAction(nameof(Index));
+            if (await _EmployeeService.DeleteEmployee(id))
+                return RedirectToAction(nameof(Index));
+            else
+                return RedirectToAction("Error", "Home");
         }
     }
 }

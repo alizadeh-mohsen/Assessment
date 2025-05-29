@@ -6,18 +6,18 @@ namespace Assessment.Application.Interfaces
     public interface IEmployeeService
     {
         // Read: Get all employees
-        IEnumerable<EmployeeViewModel> GetEmployees();
+        Task<IEnumerable<EmployeeViewModel>> GetEmployees();
 
         // Read: Get a single employee by Id
-        Employee? GetEmployee(int id);
+        Task<EmployeeViewModel?> GetEmployee(int id);
 
         // Create: Add a new employee
-        void AddEmployee(Employee employee);
+        Task<bool> AddEmployee(EmployeeViewModel employee);
 
         // Update: Update an existing employee
-        void UpdateEmployee(Employee employee);
+        Task<bool> UpdateEmployee(EmployeeViewModel employee);
 
         // Delete: Remove an employee by Id
-        void DeleteEmployee(int id);
+        Task<bool> DeleteEmployee(int id);
     }
 }

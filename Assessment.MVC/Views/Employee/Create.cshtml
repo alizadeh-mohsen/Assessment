@@ -1,4 +1,4 @@
-﻿@model Assessment.Domain.Models.Employee
+﻿@model Assessment.Application.ViewModels.EmployeeViewModel
 
 @{
     ViewData["Title"] = "Create Employee";
@@ -13,17 +13,18 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Job"></label>
-        <input asp-for="Job" class="form-control" />
-        <span asp-validation-for="Job" class="text-danger"></span>
+        <label asp-for="JobPosition"></label>
+        <input asp-for="JobPosition" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <div class="mt-2">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
 </form>
 
 @section Scripts {

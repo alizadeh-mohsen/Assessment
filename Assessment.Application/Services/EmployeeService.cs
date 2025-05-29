@@ -3,6 +3,7 @@ using Assessment.Application.ViewModels;
 using Assessment.Domain.Interfaces;
 using Assessment.Domain.Models;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Assessment.Application.Services
 {
@@ -10,39 +11,97 @@ namespace Assessment.Application.Services
     {
         private IEmployeeRepository _employeeRepository;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _cache;
+        private readonly string _employeeListCacheKey = "employee_list";
+        private string GetEmployeeCacheKey(int id) => $"employee_{id}";
 
-        public EmployeeService(IEmployeeRepository EmployeeRepository, IMapper mapper)
+
+        public EmployeeService(IEmployeeRepository EmployeeRepository, IMapper mapper, IMemoryCache cache)
         {
             _employeeRepository = EmployeeRepository;
             _mapper = mapper;
+            _cache = cache;
         }
 
-        public void AddEmployee(Employee employee)
+        public async Task<IEnumerable<EmployeeViewModel>> GetEmployees()
         {
-            _employeeRepository.AddEmployee(employee);
+            return await CachedLong(_employeeListCacheKey, async () =>
+            {
+                var employees = await _employeeRepository.GetEmployees();
+                return _mapper.Map<IEnumerable<EmployeeViewModel>>(employees);
+            });
         }
 
-        public void DeleteEmployee(int id)
+        public async Task<EmployeeViewModel?> GetEmployee(int id)
         {
-            _employeeRepository.DeleteEmployee(id);
+            string employeeCacheKey = GetEmployeeCacheKey(id);
+
+            return await Cached(employeeCacheKey, async () =>
+            {
+                var employee = await _employeeRepository.GetEmployee(id);
+                return employee == null ? null : _mapper.Map<EmployeeViewModel>(employee);
+            });
         }
 
-        public Employee? GetEmployee(int id)
+        public async Task<bool> AddEmployee(EmployeeViewModel employeeViewModel)
         {
-            return _employeeRepository.GetEmployeeById(id);
+            var employee = _mapper.Map<Employee>(employeeViewModel);
+            if (await _employeeRepository.AddEmployee(employee))
+            {
+                InvalidateCache(employee.Id);
+                return true;
+            }
+            return false;
         }
 
-        public IEnumerable<EmployeeViewModel> GetEmployees()
+        public async Task<bool> UpdateEmployee(EmployeeViewModel employeeViewModel)
         {
-
-            var employees = _employeeRepository.GetEmployees();
-            return _mapper.Map<IEnumerable<EmployeeViewModel>>(employees);
-
+            var employee = _mapper.Map<Employee>(employeeViewModel);
+            if (await _employeeRepository.UpdateEmployee(employee))
+            {
+                InvalidateCache(employee.Id);
+                return true;
+            }
+            return false;
         }
 
-        public void UpdateEmployee(Employee employee)
+        public async Task<bool> DeleteEmployee(int id)
         {
-            _employeeRepository.UpdateEmployee(employee);
+            if (await _employeeRepository.DeleteEmployee(id))
+            {
+                InvalidateCache(id);
+                return true;
+            }
+            return false;
         }
+
+        // Caches indefinitely
+        private async Task<T> CachedLong<T>(string key, Func<Task<T>> getData)
+        {
+            if (!_cache.TryGetValue(key, out T value))
+            {
+                value = await getData();
+                _cache.Set(key, value);
+            }
+            return value;
+        }
+
+        // Updated Cached method to support async lambdas
+        private async Task<T> Cached<T>(string key, Func<Task<T>> getData)
+        {
+            if (!_cache.TryGetValue(key, out T value))
+            {
+                value = await getData();
+                _cache.Set(key, value, TimeSpan.FromMinutes(5));
+            }
+            return value;
+        }
+
+        private void InvalidateCache(int id)
+        {
+            _cache.Remove(_employeeListCacheKey); // Invalidate the list cache
+            _cache.Remove(GetEmployeeCacheKey(id)); // Invalidate the individual employee cache
+        }
+
     }
 }

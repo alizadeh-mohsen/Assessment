@@ -4,10 +4,11 @@ namespace Assessment.Domain.Interfaces
 {
     public interface IEmployeeRepository
     {
-        void AddEmployee(Employee employee);
-        void DeleteEmployee(int id);
-        Employee? GetEmployeeById(int id);
-        IEnumerable<Employee> GetEmployees();
-        void UpdateEmployee(Employee employee);
+        Task<IEnumerable<Employee>> GetEmployees();
+        Task<Employee?> GetEmployee(int id);
+        Task<bool> AddEmployee(Employee employee);
+        Task<bool> UpdateEmployee(Employee employee);
+        Task<bool> DeleteEmployee(int id);
+
     }
 }

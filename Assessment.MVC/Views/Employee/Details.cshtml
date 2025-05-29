@@ -1,4 +1,4 @@
-﻿@model Assessment.Domain.Models.Employee
+﻿@model Assessment.Application.ViewModels.EmployeeViewModel
 
 @{
     ViewData["Title"] = "Employee Details";
@@ -10,8 +10,8 @@
     <h4>@Model.Name</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">Job</dt>
-        <dd class="col-sm-10">@Model.Job</dd>
+        <dt class="col-sm-2">Job Position</dt>
+        <dd class="col-sm-10">@Model.JobPosition</dd>
         <dt class="col-sm-2">Email</dt>
         <dd class="col-sm-10">
             @if (!string.IsNullOrEmpty(Model.Email))

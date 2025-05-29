@@ -1,4 +1,5 @@
 using Assessment.Application.AutoMapper;
+using Assessment.Domain.Models;
 using Assessment.Infra.Data.Context;
 using Assessment.Infra.IoC;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,8 @@ internal class Program
        
         builder.Services.AddAutoMapper(typeof(AutoMapperConfiguration).Assembly);
         builder.Services.RegisterServices(); // Extension method for DependencyContainer
-        
+        builder.Services.AddMemoryCache();
+     
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
