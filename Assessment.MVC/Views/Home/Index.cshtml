@@ -2,7 +2,127 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <h2>Understanding</h2>
+    <hr />
+    <div class="p-3">
+        <p>The solution involves two core operations:</p>
+        <ul>
+            <li><strong>CRUD operations for Employees</strong></li>
+            <li><strong>Calculation of working days</strong></li>
+        </ul>
+
+        <p>To support these, we need to persist data related to employees and holidays. Therefore, two database tables—<strong>Employee</strong> and <strong>Holiday</strong>—are required.</p>
+
+        <p>To follow the <strong>Separation of Concerns (SoC)</strong> principle:</p>
+        <ul>
+            <li>We’ll implement a <strong>Service layer</strong> for business logic</li>
+            <li>A <strong>Repository layer</strong> will handle database interactions</li>
+            <li>
+                On the UI side, we’ll use two <strong>Controllers</strong>:
+                <ul>
+                    <li>One for Employee CRUD operations</li>
+                    <li>Another for Working Days calculations</li>
+                </ul>
+            </li>
+        </ul>
+        <p>To keep the <code>Program.cs</code> file clean and maintainable, we will use an <strong>IoC (Inversion of Control)</strong> layer to manage dependency injection separately.</p>
+    </div>
+</div>
+<div class="row">
+    <h2>Planning</h2>
+    <hr />
+    <div class="p-3">
+        <p>I chose the <strong>Clean Architecture</strong> pattern for this implementation. The solution is structured into five main project folders:</p>
+        <ul>
+            <li><strong>Infra.Domain</strong> – Handles all database-related interactions</li>
+            <li><strong>Domain</strong> – Contains the domain models</li>
+            <li><strong>Application</strong> – Contains services and business logic</li>
+            <li><strong>Presentation</strong> – Responsible for the user interface (UI)</li>
+            <li><strong>Infra.IoC</strong> – Manages dependency injection setup independently from <code>Program.cs</code></li>
+        </ul>
+
+        <p>I began by defining the <strong>business models</strong>, setting up <strong>Entity Framework (EF)</strong> using the <em>Database First</em> approach. This included:</p>
+        <ul>
+            <li>Creating domain classes</li>
+            <li>Adding a connection string</li>
+            <li>Updating <code>Program.cs</code> to register the database context</li>
+            <li>Using <strong>SQLite</strong> for simplicity</li>
+            <li>Creating a <code>DbContext</code> class with relevant <code>DbSet</code> properties</li>
+            <li>Adding seed data</li>
+            <li>Generating the database using <code>Add-Migration</code> and <code>Update-Database</code> commands in the Package Manager Console</li>
+            <li>Implemented required repository methods</li>
+            <li>Implemented required services</li>
+            <li>Created Controllers and Views</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <h2>Challenges & Solutions</h2>
+    <hr />
+    <div class="p-3">
+        <p>As new features are introduced, there’s a risk of <strong>tight coupling</strong> between classes and entities. To address this:</p>
+        <ul>
+            <li>I used <strong>interfaces</strong> to decouple components and improve testability</li>
+            <li>Kept <strong>Models, Views, Controllers, business logic, and DB queries</strong> well separated</li>
+            <li>Ensured that each layer has a single responsibility, making the application more maintainable and scalable</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <h2>Pseudocode Overview</h2>
+    <hr />
+    <div class="p-3">
+
+        <ul>
+            <li>
+                <strong>Controllers</strong>
+                <ul>
+                    <li><strong>EmployeeController</strong>: Handles CRUD operations for employees.</li>
+                    <li><strong>WorkingDaysController</strong>: Handles working day calculations.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Models</strong>
+                <ul>
+                    <li><strong>Employee.cs</strong>: Defines properties like <code>ID</code>, <code>Name</code>, <code>Email</code>, <code>JobPosition</code>.</li>
+                    <li><strong>PublicHoliday.cs</strong>: Stores list of public holidays.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Views</strong>
+                <ul>
+                    <li><strong>Employee Views</strong>: UI pages for listing, adding, editing employees.</li>
+                    <li><strong>WorkingDays Views</strong>: A form where users enter two dates to calculate working days.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Service Layer</strong>
+                <ul>
+                    <li><strong>EmployeeService</strong>: Implements logic like validation & business rules.</li>
+                    <li><strong>WorkingDaysService</strong>: Handles working day calculation logic.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Repository Layer</strong>
+                <ul>
+                    <li><strong>EmployeeRepository</strong>: Fetches/stores employee data using Entity Framework LINQ.</li>
+                    <li><strong>PublicHolidayRepository</strong>: Manages stored public holidays.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Caching</strong>
+                <ul>
+                    <li><strong>CacheManager</strong>: Implements <code>CachedLong</code> (long-term cache) and <code>Cached</code> (5-minute cache).</li>
+                </ul>
+            </li>
+        </ul>
+
+
+    </div>
 </div>
