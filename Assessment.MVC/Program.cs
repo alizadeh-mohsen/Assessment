@@ -1,4 +1,3 @@
-using Assessment.Application.AutoMapper;
 using Assessment.Infra.Data.Context;
 using Assessment.Infra.IoC;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +18,12 @@ internal class Program
         builder.Services.RegisterServices(); 
      
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AssessmentDBContext>();
+            db.Database.Migrate();
+        }
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
